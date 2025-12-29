@@ -1,0 +1,49 @@
+<app-page-header heading="Login" icon="user"></app-page-header>
+<div class="container h-100"> <!-- h-100 or custom height is required -->
+  <div class="row align-items-center h-100">
+    <div class="col-5">
+      
+      @if (invalidRequestError().error) {
+      <show-error type="error" [message]="'Please enter correct Email and Password'" [timeout]="5000" ></show-error>
+      }
+
+       @if (invalidRequestError().success) {
+      <show-error 
+      type="success" [message]="'User logged in successfully'" [timeout]="8000" ></show-error>
+      }
+      <form [formGroup]="loginFormBuilder" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div class="row">
+          <div class="col-md-6">
+            <label class="col-sm-4 form-label" for="email">E-mail</label>
+            <input [class.is-invalid]="loginFormBuilder.get('email')?.invalid 
+                      && (loginFormBuilder.get('email')?.touched || submitted)" formControlName="email" type="email"
+              class="form-control" placeholder="Enter your email" />
+            <span class="invalid-feedback">
+              {{ getErrorMessage('email') }}
+            </span>
+          </div>
+        </div>
+        <!-- Password -->
+        <div class="row">
+          <div class="col-md-6">
+            <label class="col-sm-4 form-label" for="password">Password</label>
+
+            <input [class.is-invalid]="loginFormBuilder.get('password')?.invalid 
+                      && (loginFormBuilder.get('password')?.touched || submitted)" class="form-control"
+              formControlName="password" type="password" placeholder="Enter your password" />
+            <span class="invalid-feedback">
+              {{ getErrorMessage('password') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Primary</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

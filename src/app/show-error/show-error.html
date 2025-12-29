@@ -1,0 +1,21 @@
+<div
+  *ngIf="showMessage()"
+  class="alert-container"
+>
+  <div
+    [class]="classes().join(' ')"
+    role="alert"
+  >
+    <!-- Icon -->
+    <i
+      *ngIf="iconClass()"
+      [class]="iconClass()"
+      aria-hidden="true"
+    ></i>
+
+    <!-- Message -->
+    <span class="alert-message">
+      {{ message() }}
+    </span>
+  </div>
+</div>

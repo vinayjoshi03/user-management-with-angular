@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+.ant-layout-header{
+    background-color: white;
+    color: #3b3b3b !important;
+}
+.ant-layout-sider{
+    background-color: white;
+    color: #3b3b3b !important;
+}
+
+html, body{
+    color: #3b3b3b;
+}
+.page-heading{
+    font-size: 15px;
+    font-weight: bold;
+    color:#4096ff !important;
+    text-align: left;
+    margin-top: 10px;
+}
