@@ -56,3 +56,19 @@ export async function apiRequest<T>(
   }
 }
 
+export function setLocalStorageWithExpiry(key: string , value: string, hours: number = 2) {
+  const now = new Date();
+  const expiryTimeInMs = hours * 60 * 60 * 1000; // Convert hours to milliseconds
+  const item = {
+    value: value,
+    expiry: now.getTime() + expiryTimeInMs,
+  };
+  localStorage.setItem(key, JSON.stringify(item));
+}
+
+export const unsetLocalStorage=(key: string)=>{
+  localStorage.removeItem(key);
+  return;
+}
+
+

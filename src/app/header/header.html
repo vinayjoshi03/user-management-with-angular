@@ -1,17 +1,54 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li [routerLink]="['']" >
-          <span class="nav-link active" aria-current="page" href="#"><i class="bi bi-house"></i> Home</span>
-        </li>
-        <li [routerLink]="['login']" >
-          <span class="nav-link" href="#">Login</span>
-        </li>
-        <li [routerLink]="['signup']" >
-          <span class="nav-link" href="#">Sign Up</span>
-        </li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+
+        <div class="collapse navbar-collapse">
+          <!-- LEFT MENU -->
+          <ul class="navbar-nav me-auto">
+            @if (isUserLoggedIn()) {
+            <li class="nav-item" [routerLink]="['dashboard']">
+              <span class="nav-link">Dashboard</span>
+            </li>
+            } @else {
+            <li class="nav-item" [routerLink]="['']">
+              <span class="nav-link">
+                <i class="bi bi-house"></i> Home
+              </span>
+            </li>
+            <li class="nav-item" [routerLink]="['login']">
+              <span class="nav-link">Login</span>
+            </li>
+            <li class="nav-item" [routerLink]="['signup']">
+              <span class="nav-link">Sign Up</span>
+            </li>
+            }
+          </ul>
+
+          <!-- RIGHT USER PROFILE -->
+          @if (isUserLoggedIn()) {
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown profile-dropdown">
+              <!-- PROFILE TRIGGER -->
+              <div class="d-flex align-items-center profile-trigger">
+                <img [src]="userData.userprofile" class="rounded-circle me-2" width="40" height="40"
+                  alt="{{ userData.firstname }}" />
+                <span class="fw-semibold">Welcome {{ userData.firstname }}</span>
+              </div>
+
+              <!-- DROPDOWN MENU -->
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" [routerLink]="['login']">
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          }
+        </div>
+      </div>
+    </nav>
   </div>
-</nav>
+</div>

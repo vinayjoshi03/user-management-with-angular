@@ -11,3 +11,30 @@
   'GRAD' 0,
   'opsz' 24
 }
+
+.profile-dropdown {
+  position: relative;
+}
+
+/* Make sure dropdown is above navbar */
+.profile-dropdown .dropdown-menu {
+  display: block;             /* override bootstrap */
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  transition: opacity 0.2s ease;
+}
+
+/* SHOW ON HOVER */
+.profile-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Cursor */
+.profile-trigger {
+  cursor: pointer;
+}

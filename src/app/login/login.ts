@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule, NgForm, NonNullableFormBuilder, ReactiveForms
 import { PageHeader } from '../page-header/page-header';
 import { ShowError } from '../show-error/show-error';
 import { appConstants } from "../../appConstants";
-import { apiRequest } from '../Utils/utilities';
+import { apiRequest, setLocalStorageWithExpiry, unsetLocalStorage } from '../Utils/utilities';
 import { LoginResponse } from '../models/login-response.model';
 
 import { Router } from '@angular/router';
@@ -31,17 +31,14 @@ export class Login {
     private applicationService: Application,
     private fb: FormBuilder
   ) {
-    this.invalidRequestError.set({...this.invalidRequestError(), error: false, success: false});
+    this.applicationService.saveUserDetails({});
+    unsetLocalStorage(appConstants.LOCAL_STORAGE_KEY)
+    this.invalidRequestError.set({ ...this.invalidRequestError(), error: false, success: false });
     this.loginFormBuilder = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8)]]
     })
   }
-  // ngOnInit(){
-  //   if(localStorage.getItem("userDetails")){
-  //     this.router.navigate(['dashboard']);
-  //   }
-  // }
 
   errorMessages: any = {
     email: {
@@ -53,24 +50,24 @@ export class Login {
       minlength: 'Password must be at least 6 characters',
     },
   };
-  invalidRequestError = signal({error: false, success: false});
+  invalidRequestError = signal({ error: false, success: false });
   submitted = false;
   async onSubmit() {
-    this.invalidRequestError.set({...this.invalidRequestError(), error: false, success: false});
+    this.invalidRequestError.set({ ...this.invalidRequestError(), error: false, success: false });
     this.submitted = true;
     if (this.loginFormBuilder.valid) {
       const response: LoginResponse = await apiRequest(appConstants.API.LOGIN, { ...this.loginFormBuilder.value }, "POST")
       if (response.statusCode !== 200) {
-      console.log(this.loginFormBuilder.get('email').errors)
-      this.loginFormBuilder.markAllAsTouched(); // 🔥 THIS FIXES IT
-      this.invalidRequestError.set({...this.invalidRequestError(), error: true, success: false});
-      return;
+        console.log(this.loginFormBuilder.get('email').errors)
+        this.loginFormBuilder.markAllAsTouched(); // 🔥 THIS FIXES IT
+        this.invalidRequestError.set({ ...this.invalidRequestError(), error: true, success: false });
+        return;
       } else {
-      this.invalidRequestError.set({...this.invalidRequestError(), error: false, success: true});
-
+        this.invalidRequestError.set({ ...this.invalidRequestError(), error: false, success: false });
+        this.applicationService.saveUserDetails(response.data);
+        //setLocalStorageWithExpiry(appConstants.LOCAL_STORAGE_KEY, "10", 2)
+        this.router.navigate(['dashboard']);
       }
-
-      //this.applicationService.saveUserDetails(response);
     } else {
       console.log(this.loginFormBuilder.get('email').errors)
       this.loginFormBuilder.markAllAsTouched(); // 🔥 THIS FIXES IT

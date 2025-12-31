@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 import { Application } from '../services/application';
@@ -9,13 +9,15 @@ import { Application } from '../services/application';
   styleUrl: './header.css',
 })
 export class Header {
-  constructor(private applicationService: Application) { }
+  userData: any = null;
+  isLoggedIn = false;
   public isUserLoggedIn = signal<boolean>(false);
-
-  ngOnInit() {
-    const useDetails = this.applicationService.getUserDetails();
-    console.log('useDetails-->', useDetails)
-    this.isUserLoggedIn.set(Object.keys(useDetails).length > 0)
+  constructor(private applicationService: Application) {
+    effect(() => {
+      const useDetails = this.applicationService.getUserDetails();
+      console.log('useDetails-->', useDetails)
+      this.userData = useDetails;
+      this.isUserLoggedIn.set(this.applicationService.isUserLoggedIn());
+    })
   }
-
 }

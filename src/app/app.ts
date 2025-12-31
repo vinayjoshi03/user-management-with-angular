@@ -26,17 +26,9 @@ export class App {
     private fb: NonNullableFormBuilder, 
     private router: Router,
     private applicationService: Application) {
-    
+    applicationService.loadUserFromStorage();
   }
-  ngOnInit(){
-    if(
-      Object.keys(this.applicationService.getUserDetails()).length>0
-    ){
-      //this.router.navigate(['dashboard']);
-    } else {
-      //this.router.navigate(['login']);
-    }
-  }
+  
 
   
   protected readonly title = signal('user-management-with-angular');
